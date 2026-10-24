@@ -252,6 +252,36 @@ body{padding-bottom:24px}
 .fbtn svg{width:19px;height:19px}
 .legend{margin:0 2px 8px;font-size:12px;gap:12px}
 .mult-preview{margin-top:8px;padding:8px 12px;font-size:14px}
+
+/* ===== Barra de acciones: Escanear + Guardar protagonistas, campo de lectura discreto ===== */
+.scanbar{box-shadow:0 8px 20px rgba(17,24,39,.07)}
+.scanbar-in{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"scan save" "raw raw";gap:8px 12px;padding:10px 14px 8px;align-items:stretch}
+.scanbar .scan-btn,.scanbar .save-btn{height:62px;border-radius:18px;border:0;font-size:19px;font-weight:800;letter-spacing:.01em;
+  flex-direction:row;gap:12px;color:#fff;position:relative;overflow:hidden;transition:transform .08s,box-shadow .15s}
+.scanbar .scan-btn{grid-area:scan;background:linear-gradient(135deg,#14917F 0%,#0B5A66 100%);box-shadow:0 8px 18px rgba(11,90,102,.30),inset 0 1px 0 rgba(255,255,255,.22)}
+.scanbar .save-btn{grid-area:save;background:linear-gradient(135deg,#22C55E 0%,#15803D 100%);box-shadow:0 8px 18px rgba(21,128,61,.30),inset 0 1px 0 rgba(255,255,255,.25)}
+.scanbar .scan-btn:active,.scanbar .save-btn:active{transform:scale(.97);box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.scanbar .save-btn[disabled]{opacity:.8}
+.scanbar .scan-btn svg,.scanbar .save-btn svg{width:26px;height:26px;padding:8px;box-sizing:content-box;border-radius:50%;background:rgba(255,255,255,.2);stroke-width:2}
+.scanbar .scan-btn #scanIcon{display:grid;place-items:center}
+
+.raw-box{grid-area:raw;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px}
+.raw-label{display:contents}
+.raw-label>span:first-child{font-size:10.5px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;order:0}
+.scanbar .iw{order:1;height:30px;border-width:1px;border-radius:9px;background:#F8FAFC}
+.scanbar .iw:focus-within{box-shadow:0 0 0 3px var(--red-50)}
+.scanbar .iw input{height:28px;font-size:13px;font-weight:600;padding:0 10px;color:#4B5563}
+.scanbar .iw input::placeholder{font-size:12.5px;color:#B6BCC6;font-weight:500}
+.scanbar .iw .fbtn{width:26px;height:26px;margin-right:2px}
+.scanbar .iw .fbtn svg{width:15px;height:15px}
+.today{order:2;font-size:11px;padding:2px 8px;white-space:nowrap}
+@media(max-width:560px){
+  .scanbar-in{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-areas:"scan save" "raw raw";gap:8px 10px}
+  .scanbar .scan-btn,.scanbar .save-btn{height:56px;font-size:17px;gap:8px}
+  .scanbar .scan-btn svg,.scanbar .save-btn svg{width:22px;height:22px;padding:6px}
+  .raw-label>span:first-child{display:none}
+  .raw-box{grid-template-columns:minmax(0,1fr) auto}
+}
 </style>
 </head>
 <body>
