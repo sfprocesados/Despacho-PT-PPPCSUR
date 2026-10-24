@@ -1,0 +1,1039 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#C8102E">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Despacho PT · San Fernando</title>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" defer></script>
+<style>
+:root{
+  --red:#C8102E; --red-d:#8F0A20; --red-50:#FDECEF;
+  --green:#15803D; --green-d:#14532D; --green-50:#DCFCE7;
+  --teal:#0F766E; --teal-d:#115E59;
+  --amber:#B45309; --amber-50:#FEF3C7;
+  --bg:#F2F3F5; --card:#FFFFFF; --text:#111827; --muted:#6B7280; --line:#E5E7EB;
+  --radius:18px; --shadow:0 1px 2px rgba(0,0,0,.05),0 6px 18px rgba(17,24,39,.06);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+body{padding-bottom:120px}
+button{font:inherit;cursor:pointer}
+svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+/* ---------- Cabecera ---------- */
+.sticky{position:sticky;top:0;z-index:30}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:linear-gradient(135deg,var(--red),var(--red-d));color:#fff}
+.brand{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.logo{width:46px;height:46px;border-radius:14px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}
+.logo img{max-width:90%;max-height:90%}
+.logo span{display:none;color:var(--red);font-weight:900;font-size:19px;letter-spacing:-1px}
+.logo.nologo span{display:block}
+.t1{font-weight:800;font-size:18px;line-height:1.1}
+.t2{font-size:13px;opacity:.85;margin-top:2px}
+.chip-status{display:flex;align-items:center;gap:7px;border:0;color:#fff;background:rgba(255,255,255,.16);
+  padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700;white-space:nowrap}
+.chip-status .dot{width:9px;height:9px;border-radius:50%;background:#4ADE80;box-shadow:0 0 0 3px rgba(74,222,128,.25)}
+.chip-status.off .dot{background:#D1D5DB;box-shadow:none}
+.chip-status.pend .dot{background:#FBBF24;box-shadow:0 0 0 3px rgba(251,191,36,.3)}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:0;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center}
+.tabs{display:flex;gap:6px;padding:8px 16px;background:#fff;border-bottom:1px solid var(--line)}
+.tabs button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border:0;border-radius:12px;
+  background:transparent;color:var(--muted);font-weight:700;font-size:16px}
+.tabs button.active{background:var(--red-50);color:var(--red)}
+
+/* ---------- Contenido ---------- */
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:14px}
+.banner{display:flex;gap:12px;align-items:center;background:var(--amber-50);color:#78350F;border-radius:14px;padding:14px 16px;margin-bottom:14px;font-weight:600}
+.banner button{margin-left:auto}
+
+.scan-hero{display:grid;grid-template-columns:1fr;gap:16px;align-items:center}
+@media(min-width:620px){.scan-hero{grid-template-columns:260px minmax(0,1fr)}}
+.scan-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:150px;border:0;border-radius:20px;
+  background:linear-gradient(145deg,var(--teal),var(--teal-d));color:#fff;font-weight:800;font-size:19px;
+  box-shadow:0 10px 24px rgba(15,118,110,.35);transition:transform .08s}
+.scan-btn:active{transform:scale(.97)}
+.scan-btn svg{width:62px;height:62px;stroke-width:1.6}
+.raw-label{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;display:block}
+.hint{font-size:13px;color:var(--muted);margin-top:8px}
+.today{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:var(--green-50);color:var(--green-d);
+  font-weight:700;font-size:13px;padding:6px 10px;border-radius:999px}
+
+.sec-head{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.sec-num{width:28px;height:28px;border-radius:9px;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px}
+.sec-title{font-weight:800;font-size:17px}
+.sec-sub{font-size:13px;color:var(--muted);font-weight:500}
+.sec-head .link{margin-left:auto}
+.link{border:0;background:transparent;color:var(--red);font-weight:700;font-size:14px;padding:8px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+@media(min-width:620px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.field{min-width:0}
+.wide{grid-column:1/-1}
+.field label{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.req{color:var(--red)}
+.qr-tag{display:none;background:#16A34A;color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;letter-spacing:.05em}
+.field.qr .qr-tag{display:inline-block}
+.iw{display:flex;align-items:center;border:2px solid var(--line);border-radius:14px;background:#fff;transition:border-color .15s,box-shadow .15s,background .15s}
+.iw:focus-within{border-color:var(--red);box-shadow:0 0 0 4px var(--red-50)}
+.iw input{flex:1;min-width:0;border:0;outline:0;background:transparent;font-size:19px;font-weight:650;padding:0 14px;height:54px;color:var(--text)}
+.iw input::placeholder{color:#C3C7CE;font-weight:500}
+.fbtn{width:42px;height:42px;margin-right:5px;border:0;border-radius:11px;background:transparent;display:grid;place-items:center;color:#A1A7B0}
+.fbtn svg{width:21px;height:21px}
+.fbtn.erase{color:var(--red)}
+.fbtn.erase:active{background:var(--red-50)}
+.fbtn.pin.on{color:var(--red);background:var(--red-50)}
+.fbtn.pin.on svg{fill:currentColor}
+.fbtn.sign{color:var(--text);font-weight:900;font-size:20px;background:#F3F4F6}
+.field.qr .iw{background:#F0FDF4;border-color:#86EFAC}
+.field.invalid .iw{border-color:#DC2626;background:#FEF2F2}
+.field.flash .iw{animation:flash .9s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 0 rgba(22,163,74,.55)}100%{box-shadow:0 0 0 12px rgba(22,163,74,0)}}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin:4px 2px 14px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{width:16px;height:16px}
+
+/* ---------- Barra guardar ---------- */
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:25;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  background:rgba(242,243,245,.88);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+.save-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:948px;margin:0 auto;height:64px;border:0;border-radius:18px;
+  background:linear-gradient(145deg,#16A34A,var(--green));color:#fff;font-size:21px;font-weight:800;box-shadow:0 10px 22px rgba(21,128,61,.35)}
+.save-btn:active{transform:scale(.99)}
+.save-btn[disabled]{opacity:.7}
+.save-btn svg{width:26px;height:26px}
+
+/* ---------- Botones ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 18px;border-radius:13px;border:2px solid transparent;font-weight:750;font-size:16px}
+.btn.primary{background:var(--red);color:#fff}
+.btn.green{background:var(--green);color:#fff}
+.btn.teal{background:var(--teal);color:#fff}
+.btn.ghost{background:#fff;border-color:var(--line);color:var(--text)}
+.btn.danger{background:#fff;border-color:#FCA5A5;color:#B91C1C}
+.btn.danger-solid{background:#DC2626;color:#fff}
+.btn svg{width:19px;height:19px}
+
+/* ---------- Historial ---------- */
+.filters{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:620px){.filters{grid-template-columns:200px 1fr auto}}
+.filters input{height:50px;border:2px solid var(--line);border-radius:13px;padding:0 14px;font-size:17px;font-weight:600;background:#fff;width:100%;outline:0}
+.filters input:focus{border-color:var(--red)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.stat{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.stat b{display:block;font-size:24px}
+.stat span{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.tbl-wrap{background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:auto;max-height:calc(100vh - 300px);-webkit-overflow-scrolling:touch}
+table.ht{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font-size:15px}
+.ht th{position:sticky;top:0;z-index:2;background:#1F2937;color:#fff;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;text-align:left;padding:11px 10px;white-space:nowrap}
+.ht td{border-bottom:1px solid var(--line);padding:4px;vertical-align:middle;background:#fff}
+.ht tbody tr:nth-child(even) td{background:#F9FAFB}
+.ht td.ro{padding:4px 10px;color:var(--muted);font-weight:700;white-space:nowrap}
+.ht .sl{position:sticky;left:0;z-index:1;box-shadow:1px 0 0 var(--line)}
+.ht th.sl{z-index:3}
+.ht tr.pending td.sl{box-shadow:inset 5px 0 0 #F59E0B,1px 0 0 var(--line)}
+.hcell{display:flex;align-items:center;gap:6px}
+.cell{display:block;height:42px;border:2px solid transparent;border-radius:9px;padding:0 8px;font:inherit;font-weight:600;background:transparent;outline:0;color:var(--text)}
+.cell:hover{border-color:var(--line)}
+.cell:focus{border-color:var(--red);background:#fff}
+.cell.chg{background:#FEF9C3;border-color:#FACC15}
+.cell.bad{background:#FEF2F2;border-color:#DC2626}
+.rowdel{width:36px;height:36px;border:0;border-radius:9px;background:transparent;color:#B91C1C;display:grid;place-items:center}
+.rowdel:active{background:var(--red-50)}
+.rowdel svg{width:18px;height:18px}
+.changebar{position:fixed;left:0;right:0;bottom:0;z-index:26;display:flex;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:#111827;color:#fff;font-weight:700;box-shadow:0 -6px 20px rgba(0,0,0,.2)}
+.changebar .sp{flex:1}
+.mult-preview{margin-top:14px;padding:12px 14px;border-radius:12px;background:#EFF6FF;color:#1E3A8A;font-weight:700;line-height:1.5}
+.mult-preview b{font-size:18px}
+.badge{font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+.badge.p{background:var(--amber-50);color:var(--amber)}
+.badge.e{background:#EEF2FF;color:#4338CA}
+.empty{text-align:center;color:var(--muted);padding:40px 16px;font-weight:600}
+.empty svg{width:46px;height:46px;opacity:.5;margin-bottom:8px}
+.skel{height:92px;border-radius:16px;background:linear-gradient(90deg,#eceef1 25%,#f6f7f8 50%,#eceef1 75%);background-size:200% 100%;animation:sk 1.2s infinite}
+@keyframes sk{to{background-position:-200% 0}}
+
+/* ---------- Modales ---------- */
+.modal-back,.dlg-back{position:fixed;inset:0;background:rgba(17,24,39,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:60}
+.dlg-back{z-index:80}
+.modal{background:var(--bg);border-radius:22px;width:min(760px,100%);max-height:94vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal-h{display:flex;align-items:center;gap:12px;padding:16px 18px;background:#fff;border-bottom:1px solid var(--line)}
+.modal-h h2{margin:0;font-size:19px}
+.modal-h p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.modal-h .x{margin-left:auto;width:42px;height:42px;border:0;border-radius:12px;background:#F3F4F6;display:grid;place-items:center}
+.modal-b{padding:16px 18px;overflow:auto}
+.modal-f{display:flex;gap:10px;padding:14px 18px;background:#fff;border-top:1px solid var(--line)}
+.modal-f .sp{flex:1}
+.dlg{background:#fff;border-radius:20px;padding:22px;width:min(440px,100%);box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.dlg h3{margin:0 0 8px;font-size:19px}
+.dlg p{margin:0 0 16px;color:#374151;line-height:1.45}
+.dlg-in{width:100%;height:52px;border:2px solid var(--line);border-radius:13px;padding:0 14px;font-size:20px;margin-bottom:16px;outline:0}
+.dlg-in:focus{border-color:var(--red)}
+.dlg-btns{display:flex;gap:10px;justify-content:flex-end}
+
+/* Ajustes */
+.set-in{width:100%;height:50px;border:2px solid var(--line);border-radius:13px;padding:0 14px;font-size:16px;outline:0;background:#fff}
+.set-in:focus{border-color:var(--red)}
+.set-lbl{display:block;font-size:12.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:12px 0 6px}
+.row{display:flex;gap:10px;align-items:center}
+.row .set-in{flex:1}
+.map-row{display:grid;grid-template-columns:34px 1fr 190px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
+.map-row .mi{width:30px;height:30px;border-radius:9px;background:#F3F4F6;display:grid;place-items:center;font-weight:800;font-size:13px}
+.map-row code{font-size:15px;font-weight:650;word-break:break-all;background:#F9FAFB;padding:6px 8px;border-radius:8px}
+.map-row select{height:44px;border:2px solid var(--line);border-radius:11px;padding:0 8px;font-size:15px;background:#fff}
+@media(max-width:520px){.map-row{grid-template-columns:30px 1fr}.map-row select{grid-column:1/-1}}
+.muted{color:var(--muted)}
+
+/* Escáner */
+.scan-ov{position:fixed;inset:0;background:#0B0F14;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px}
+#reader{width:min(560px,94vw);border-radius:18px;overflow:hidden;background:#000}
+#reader video{border-radius:18px}
+.scan-ov p{color:#E5E7EB;font-weight:650;margin:0;text-align:center}
+.scan-ov .btn{min-width:200px}
+
+/* Toasts */
+.toasts{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(560px,92vw)}
+.toast{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:14px;color:#fff;font-weight:700;box-shadow:0 10px 24px rgba(0,0,0,.25);
+  animation:tin .2s ease-out}
+.toast.ok{background:#15803D}.toast.err{background:#B91C1C}.toast.warn{background:#B45309}.toast.info{background:#1F2937}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}}
+.spin{width:22px;height:22px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="sticky">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" id="logo"><img src="logo.png" alt="San Fernando" onerror="this.parentNode.classList.add('nologo');this.remove()"><span>SF</span></div>
+      <div><div class="t1">Despacho PT</div><div class="t2">San Fernando · PPPC SUR</div></div>
+    </div>
+    <button class="chip-status" id="netChip" title="Estado de conexión (toca para reenviar pendientes)"><span class="dot"></span><span id="netText">En línea</span></button>
+    <button class="icon-btn" id="btnSettings" title="Ajustes"></button>
+  </header>
+  <nav class="tabs">
+    <button data-tab="scan" class="active" id="tabScanBtn"></button>
+    <button data-tab="hist" id="tabHistBtn"></button>
+  </nav>
+</div>
+
+<main class="wrap">
+  <!-- ===== PANTALLA ESCANEAR ===== -->
+  <section id="tab-scan">
+    <div class="banner" id="setupBanner" hidden>
+      <span>⚠️ Falta conectar la app con Google Sheets.</span>
+      <button class="btn primary" id="btnSetupNow">Configurar</button>
+    </div>
+
+    <div class="card">
+      <div class="scan-hero">
+        <button class="scan-btn" id="btnScan"><span id="scanIcon"></span>Escanear etiqueta</button>
+        <div>
+          <label class="raw-label" for="raw">Dato escaneado</label>
+          <div class="iw" id="w_raw">
+            <input id="raw" autocomplete="off" placeholder="Escanea, usa la pistola o pega el código…" enterkeyhint="done">
+            <button type="button" class="fbtn erase" data-act="erase" data-t="raw" title="Borrar"></button>
+          </div>
+          <div class="hint">También funciona con lector de mano (pistola): enfoca este campo y dispara.</div>
+          <div class="today" id="todayCount">Hoy en este equipo: 0 registros</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend" id="legend"></div>
+    <form id="form" autocomplete="off" onsubmit="return false"></form>
+  </section>
+
+  <!-- ===== PANTALLA HISTORIAL ===== -->
+  <section id="tab-hist" hidden>
+    <div class="card">
+      <div class="filters">
+        <input type="date" id="hDate">
+        <input type="search" id="hSearch" placeholder="Buscar placa, OP, código, pallet, lote…">
+        <button class="btn teal" id="btnRefresh"></button>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="sCount">0</b><span>Registros</span></div>
+      <div class="stat"><b id="sCajas">0</b><span>Cajas/Tinas</span></div>
+      <div class="stat"><b id="sUnd">0</b><span>Unidades</span></div>
+    </div>
+    <div id="hList"></div>
+    <p class="hint" style="margin:10px 4px">Toca cualquier celda para corregirla. Las celdas cambiadas se marcan en amarillo y se guardan con el botón "Guardar cambios".</p>
+  </section>
+</main>
+
+<div class="savebar" id="savebar">
+  <button class="save-btn" id="btnSave"></button>
+</div>
+
+<div class="changebar" id="changeBar" hidden>
+  <span id="chgText">0 filas con cambios</span><span class="sp"></span>
+  <button class="btn ghost" id="btnDiscard">Descartar</button>
+  <button class="btn green" id="btnSaveChanges">Guardar cambios</button>
+</div>
+
+<div class="scan-ov" id="scanOv" hidden>
+  <div id="reader"></div>
+  <p>Apunta la cámara al QR o código de barras de la etiqueta</p>
+  <button class="btn ghost" id="btnCloseScan">Cancelar</button>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN — edita estos valores antes de subir a GitHub
+   ===================================================================== */
+const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbzMMb_q9oN3PbgqAlnGfySXBYb7TC8Ef2U8E8OkZjPZuudbjwqSajUgfPUP-sQ-Wgfy/exec';                 // URL /exec de tu Apps Script (también se puede poner en ⚙️ Ajustes)
+const API_KEY   = 'AhicamAlvarez';       // Igual que en Code.gs
+const ADMIN_PIN = '2026';                   // PIN para entrar a Ajustes
+const QR_SEP    = '*';                      // Separador de datos dentro del QR
+const REQUIRED  = ['placa','codigo'];       // Campos obligatorios para guardar
+
+/* ---------- Campos del formulario ----------
+   pin: true  => se MANTIENE después de guardar (como la app actual)
+   El operario puede cambiarlo tocando el ícono 📌 de cada campo. */
+const FIELDS = [
+  {key:'placa',        label:'Placa',                   type:'text', upper:true, pin:true, wide:true, ph:'Placa de la movilidad'},
+  {key:'descripcion',  label:'Descripción',             type:'text', wide:true, ph:'Se llena con el QR'},
+  {key:'codigo',       label:'Código',                  type:'num',  pin:true},
+  {key:'op',           label:'OP',                      type:'num'},
+  {key:'lote',         label:'Lote Juliano',            type:'num',  pin:true},
+  {key:'numEtiqueta',  label:'N° Etiqueta',             type:'num'},
+  {key:'fechaProd',    label:'Fecha Producción',        type:'text', ph:'dd/mm/aaaa'},
+  {key:'fechaVenc',    label:'Fecha Vencimiento',       type:'text', ph:'dd/mm/aaaa'},
+  {key:'pesoNeto',     label:'Peso Neto (kg)',          type:'dec'},
+  {key:'pesoBruto',    label:'Peso Bruto (kg)',         type:'dec'},
+  {key:'und',          label:'Cant. Und',               type:'num',  ph:'UND'},
+  {key:'cajas',        label:'Cant. Cajas/Tinas/Sacos', type:'num',  pin:true, ph:'Cajas/Tinas/Sacos'},
+  {key:'temperatura',  label:'Temperatura (°C)',        type:'dec',  signed:true, ph:'°C'},
+  {key:'pallet',       label:'N° de Pallet',            type:'num'},
+  {key:'multiplicador',label:'Multiplicador de Pallet', type:'num',  wide:true},
+];
+const F = Object.fromEntries(FIELDS.map(f => [f.key, f]));
+const SECTIONS = [
+  {title:'Transporte', keys:['placa']},
+  {title:'Producto', sub:'Se completa automáticamente al escanear', keys:['descripcion','codigo','op','lote','numEtiqueta','fechaProd','fechaVenc','pesoNeto','pesoBruto']},
+  {title:'Despacho', keys:['und','cajas','temperatura','pallet','multiplicador']},
+];
+// Campos que pueden venir dentro del QR
+const MAPPABLE = ['codigo','descripcion','op','lote','fechaProd','fechaVenc','pesoNeto','pesoBruto','und','cajas','pallet','numEtiqueta'];
+
+/* ---------- Íconos ---------- */
+const ICONS = {
+  scan:'<path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="4" height="4" rx=".5"/><rect x="13" y="7" width="4" height="4" rx=".5"/><rect x="7" y="13" width="4" height="4" rx=".5"/><path d="M13 13h4v4"/>',
+  eraser:'<path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/>',
+  pin:'<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>',
+  save:'<path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/>',
+  gear:'<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
+  history:'<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+  camera:'<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>',
+  refresh:'<path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>',
+  trash:'<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+  x:'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  box:'<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',
+};
+const ic = n => `<svg viewBox="0 0 24 24">${ICONS[n]}</svg>`;
+
+/* ---------- Utilidades ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+};
+const LS = {url:'dpt_url', equipo:'dpt_equipo', map:'dpt_map', pins:'dpt_pins', queue:'dpt_queue', draft:'dpt_draft', recent:'dpt_recent'};
+const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+
+function limaNow(){
+  const p = new Intl.DateTimeFormat('es-PE', {timeZone:'America/Lima', year:'numeric', month:'2-digit', day:'2-digit',
+    hour:'2-digit', minute:'2-digit', second:'2-digit', hourCycle:'h23'}).formatToParts(new Date());
+  const g = t => (p.find(x => x.type === t) || {}).value;
+  return {fecha:`${g('day')}/${g('month')}/${g('year')}`, hora:`${g('hour')}:${g('minute')}:${g('second')}`, iso:`${g('year')}-${g('month')}-${g('day')}`};
+}
+const isoToDmy = iso => { const [y,m,d] = String(iso||'').split('-'); return d ? `${d}/${m}/${y}` : ''; };
+const num = v => { const n = parseFloat(String(v||'').replace(',', '.')); return isNaN(n) ? 0 : n; };
+const fmt = n => n.toLocaleString('es-PE', {maximumFractionDigits:2});
+
+/* ---------- Estado ---------- */
+const cfg = {
+  url: store.get(LS.url, DEFAULT_API_URL) || DEFAULT_API_URL,
+  equipo: store.get(LS.equipo, ''),
+  map: store.get(LS.map, null),
+};
+let pins  = Object.assign(Object.fromEntries(FIELDS.map(f => [f.key, !!f.pin])), store.get(LS.pins, {}));
+let queue = store.get(LS.queue, []);
+let hist  = [];
+
+/* ---------- Toasts y diálogos ---------- */
+function toast(msg, type='info', ms=3200){
+  const t = document.createElement('div');
+  t.className = 'toast ' + type; t.textContent = msg;
+  $('#toasts').appendChild(t);
+  setTimeout(() => t.remove(), ms);
+}
+function dialog({title, text='', ok='Aceptar', cancel='Cancelar', kind='primary', input=null}){
+  return new Promise(resolve => {
+    const back = document.createElement('div');
+    back.className = 'dlg-back';
+    back.innerHTML = `<div class="dlg"><h3>${esc(title)}</h3><p>${text}</p>
+      ${input ? `<input class="dlg-in" type="${input}" inputmode="numeric" autocomplete="off">` : ''}
+      <div class="dlg-btns">${cancel ? `<button class="btn ghost" data-r="0">${esc(cancel)}</button>` : ''}
+      <button class="btn ${kind}" data-r="1">${esc(ok)}</button></div></div>`;
+    document.body.appendChild(back);
+    const inp = back.querySelector('.dlg-in');
+    if (inp) setTimeout(() => inp.focus(), 60);
+    const done = r => { back.remove(); resolve(input ? (r ? inp.value : null) : r); };
+    back.addEventListener('click', e => { const b = e.target.closest('[data-r]'); if (b) done(b.dataset.r === '1'); });
+    if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') done(true); });
+  });
+}
+function openModal(html){
+  closeModal();
+  const back = document.createElement('div');
+  back.className = 'modal-back'; back.id = 'modalBack';
+  back.innerHTML = `<div class="modal">${html}</div>`;
+  document.body.appendChild(back);
+  back.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeModal(); });
+  return back;
+}
+function closeModal(){ const m = $('#modalBack'); if (m) m.remove(); }
+
+/* ---------- Sonido de lectura ---------- */
+let actx;
+function beep(ok=true){
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'sine'; o.frequency.value = ok ? 1250 : 380;
+    g.gain.setValueAtTime(.2, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001, actx.currentTime + .18);
+    o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + .2);
+  }catch(e){}
+  if (navigator.vibrate) navigator.vibrate(ok ? 80 : [60,60,60]);
+}
+
+/* ---------- Formulario ---------- */
+function fieldHTML(f, p, withPin){
+  const id = p + f.key;
+  const im = f.type === 'num' ? 'numeric' : f.type === 'dec' ? 'decimal' : 'text';
+  return `<div class="field ${f.wide ? 'wide' : ''}" id="w_${id}">
+    <label for="${id}">${esc(f.label)}${REQUIRED.includes(f.key) ? '<span class="req">*</span>' : ''}<span class="qr-tag">QR</span></label>
+    <div class="iw">
+      <input id="${id}" data-k="${f.key}" data-p="${p}" inputmode="${im}" autocomplete="off"
+        ${f.upper ? 'autocapitalize="characters"' : ''} placeholder="${esc(f.ph || '')}" enterkeyhint="next">
+      ${f.signed ? `<button type="button" class="fbtn sign" data-act="sign" data-t="${id}" title="Cambiar signo (+/−)">±</button>` : ''}
+      ${withPin ? `<button type="button" class="fbtn pin ${pins[f.key] ? 'on' : ''}" data-act="pin" data-k="${f.key}" title="Mantener después de guardar">${ic('pin')}</button>` : ''}
+      <button type="button" class="fbtn erase" data-act="erase" data-t="${id}" title="Borrar campo">${ic('eraser')}</button>
+    </div></div>`;
+}
+function buildForm(){
+  $('#form').innerHTML = SECTIONS.map((s, i) => `
+    <div class="card">
+      <div class="sec-head"><span class="sec-num">${i + 1}</span>
+        <div><div class="sec-title">${esc(s.title)}</div>${s.sub ? `<div class="sec-sub">${esc(s.sub)}</div>` : ''}</div>
+        ${i === 0 ? '<button type="button" class="link" id="btnClearAll">Limpiar todo</button>' : ''}
+      </div>
+      <div class="grid">${s.keys.map(k => fieldHTML(F[k], 'f_', true)).join('')}</div>
+      ${s.keys.includes('multiplicador') ? '<div class="mult-preview" id="multPreview" hidden></div>' : ''}
+    </div>`).join('');
+  $('#legend').innerHTML = `<span><span style="color:var(--red)">${ic('pin')}</span> Fijado: se mantiene al guardar</span>
+    <span><span style="color:var(--red)">${ic('eraser')}</span> Borra la casilla</span>
+    <span><span class="qr-tag" style="display:inline-block">QR</span> Llenado desde la etiqueta</span>`;
+  $('#btnClearAll').addEventListener('click', async () => {
+    if (await dialog({title:'Limpiar todo', text:'Se borrarán todos los campos, incluida la placa. ¿Continuar?', ok:'Limpiar', kind:'danger-solid'})) {
+      FIELDS.forEach(f => setVal(f.key, '', false)); $('#raw').value = ''; saveDraft();
+    }
+  });
+}
+const inp = k => $('#f_' + k);
+const getVal = k => (inp(k)?.value || '').trim();
+function setVal(k, v, fromQR){
+  const el = inp(k); if (!el) return;
+  el.value = v ?? '';
+  markField(el, !!fromQR && v !== '');
+}
+function markField(el, qr){
+  const w = $('#w_' + el.id); if (!w) return;
+  w.classList.toggle('qr', qr);
+  w.classList.remove('invalid');
+  if (qr){ w.classList.remove('flash'); void w.offsetWidth; w.classList.add('flash'); }
+}
+function saveDraft(){
+  const d = {raw: $('#raw').value}; FIELDS.forEach(f => d[f.key] = inp(f.key).value);
+  store.set(LS.draft, d);
+  updateMultPreview();
+}
+
+/* ---------- Multiplicador de pallet ----------
+   Si el multiplicador es > 1, se guarda Und × mult y Cajas × mult */
+const multFactor = () => { const m = num(getVal('multiplicador')); return m > 0 ? m : 1; };
+const round3 = n => String(Math.round(n * 1000) / 1000);
+function multiplied(v, m){ return String(v || '').trim() === '' ? '' : round3(num(v) * m); }
+function updateMultPreview(){
+  const box = $('#multPreview'); if (!box) return;
+  const m = multFactor();
+  if (m === 1){ box.hidden = true; return; }
+  const und = getVal('und'), caj = getVal('cajas');
+  const part = (lbl, v) => v ? `${lbl}: ${esc(v)} × ${round3(m)} = <b>${multiplied(v, m)}</b>` : `${lbl}: (vacío)`;
+  box.innerHTML = `Se guardará con el multiplicador ×${round3(m)}<br>${part('Und', und)} &nbsp;·&nbsp; ${part('Cajas/Tinas/Sacos', caj)}`;
+  box.hidden = false;
+}
+function restoreDraft(){
+  const d = store.get(LS.draft, null); if (!d) return;
+  FIELDS.forEach(f => { if (d[f.key] != null) inp(f.key).value = d[f.key]; });
+  if (d.raw) $('#raw').value = d.raw;
+}
+
+/* Eventos de campos (formulario principal y modal de edición) */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.dataset.act;
+  if (act === 'erase'){
+    const el = document.getElementById(b.dataset.t); if (!el) return;
+    el.value = ''; markField(el, false);
+    el.dispatchEvent(new Event('input', {bubbles:true})); el.focus();
+  } else if (act === 'pin'){
+    const k = b.dataset.k; pins[k] = !pins[k]; store.set(LS.pins, pins);
+    b.classList.toggle('on', pins[k]);
+    toast(`${F[k].label}: ${pins[k] ? 'se mantendrá' : 'se borrará'} después de guardar`, 'info', 2000);
+  } else if (act === 'sign'){
+    const el = document.getElementById(b.dataset.t); let v = el.value.trim();
+    el.value = v.startsWith('-') ? v.slice(1) : '-' + v;
+    el.dispatchEvent(new Event('input', {bubbles:true})); el.focus();
+  }
+});
+document.addEventListener('input', e => {
+  const el = e.target; if (!el.dataset || !el.dataset.p) return;
+  const f = F[el.dataset.k];
+  if (f && f.upper){ const pos = el.selectionStart; el.value = el.value.toUpperCase(); try{ el.setSelectionRange(pos, pos); }catch(_){} }
+  const w = $('#w_' + el.id); if (w && e.isTrusted) w.classList.remove('qr', 'invalid');
+  if (el.dataset.p === 'f_') saveDraft();
+});
+document.addEventListener('keydown', e => {
+  const el = e.target; if (e.key !== 'Enter' || !el.dataset || !el.dataset.p) return;
+  e.preventDefault();
+  const all = [...el.closest('form, .modal').querySelectorAll('input[data-p]')];
+  const next = all[all.indexOf(el) + 1];
+  next ? next.focus() : el.blur();
+});
+
+/* ---------- Lectura del QR ---------- */
+function splitQR(raw){ return String(raw || '').split(QR_SEP).map(s => s.trim()); }
+
+function applyScan(raw){
+  raw = String(raw || '').trim(); if (!raw) return;
+  $('#raw').value = raw;
+  const parts = splitQR(raw);
+  beep(true);
+
+  if (!cfg.map || !cfg.map.length){
+    if (parts.length > 1){
+      toast('Primera vez: indica qué dato es cada parte del QR', 'warn', 4000);
+      openSettings({sample: raw, skipPin: true});
+    } else {
+      toast('Código leído: ' + raw, 'info');
+    }
+    saveDraft(); return;
+  }
+
+  if (parts.length > 1 && parts.length !== cfg.map.length)
+    toast(`Ojo: el QR trae ${parts.length} datos y la configuración espera ${cfg.map.length}. Revisa los campos.`, 'warn', 5000);
+
+  // Limpia los campos que vienen del QR y vuelve a llenarlos
+  cfg.map.forEach(k => { if (k) setVal(k, '', false); });
+  cfg.map.forEach((k, i) => { if (k && parts[i] !== undefined && parts[i] !== '') setVal(k, parts[i], true); });
+  saveDraft();
+
+  if (recentHas(raw)) { beep(false); toast('⚠️ Esta etiqueta ya fue registrada hoy en este equipo', 'warn', 4500); }
+
+  // Lleva al siguiente campo que hay que digitar
+  const nextKey = ['placa','temperatura','pallet','und','cajas'].find(k => !getVal(k));
+  if (nextKey){ inp(nextKey).scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+
+/* Pistola / teclado en el campo "Dato escaneado" */
+$('#raw').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); applyScan(e.target.value); e.target.blur(); } });
+$('#raw').addEventListener('paste', () => setTimeout(() => applyScan($('#raw').value), 30));
+$('#raw').addEventListener('input', saveDraft);
+
+/* ---------- Cámara ---------- */
+let qr = null, scanCb = null, scanning = false;
+async function openScanner(cb){
+  if (typeof Html5Qrcode === 'undefined'){
+    toast('No se pudo cargar el lector de cámara. Revisa internet o usa la pistola.', 'err', 4500); return;
+  }
+  scanCb = cb; $('#scanOv').hidden = false; scanning = true;
+  try{
+    if (!qr){
+      const F_ = Html5QrcodeSupportedFormats;
+      qr = new Html5Qrcode('reader', {verbose:false,
+        formatsToSupport:[F_.QR_CODE, F_.CODE_128, F_.CODE_39, F_.EAN_13, F_.EAN_8, F_.UPC_A, F_.ITF, F_.DATA_MATRIX],
+        experimentalFeatures:{useBarCodeDetectorIfSupported:true}});
+    }
+    await qr.start({facingMode:'environment'},
+      {fps:12, qrbox:(w, h) => { const s = Math.floor(Math.min(w, h) * .78); return {width:s, height:s}; }},
+      text => { if (!scanning) return; scanning = false; const fn = scanCb; closeScanner().then(() => fn && fn(text)); },
+      () => {});
+  }catch(err){
+    await closeScanner();
+    toast('No se pudo abrir la cámara. Da permiso de cámara al navegador. (' + (err?.message || err) + ')', 'err', 6000);
+  }
+}
+async function closeScanner(){
+  scanning = false;
+  try{ if (qr && qr.isScanning) await qr.stop(); }catch(e){}
+  $('#scanOv').hidden = true;
+}
+$('#btnCloseScan').addEventListener('click', closeScanner);
+$('#btnScan').addEventListener('click', () => openScanner(applyScan));
+
+/* ---------- Registro local de lo escaneado hoy ---------- */
+function recentData(){
+  const today = limaNow().fecha;
+  let r = store.get(LS.recent, null);
+  if (!r || r.date !== today) r = {date: today, raws: [], count: 0};
+  return r;
+}
+const recentHas = raw => recentData().raws.includes(raw);
+function recentAdd(raw){
+  const r = recentData(); r.count++;
+  if (raw){ r.raws.push(raw); if (r.raws.length > 800) r.raws = r.raws.slice(-800); }
+  store.set(LS.recent, r); updateToday();
+}
+function updateToday(){
+  const n = recentData().count;
+  $('#todayCount').textContent = `Hoy en este equipo: ${n} registro${n === 1 ? '' : 's'}`;
+}
+
+/* ---------- Conexión con Google Sheets ---------- */
+async function api(action, data = {}, timeoutMs = 25000){
+  if (!cfg.url) throw new Error('Falta configurar la URL de Google Sheets (⚙️ Ajustes)');
+  const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), timeoutMs);
+  let res;
+  try{
+    res = await fetch(cfg.url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(Object.assign({action, key: API_KEY}, data)), signal: ctrl.signal});
+  }catch(e){
+    const err = new Error('Sin conexión con Google Sheets'); err.network = true; throw err;
+  }finally{ clearTimeout(t); }
+  let json;
+  try{ json = await res.json(); }
+  catch(e){ throw new Error('Respuesta inválida. Revisa que el Apps Script esté implementado con acceso "Cualquier persona".'); }
+  if (!json.ok && !json.duplicate) throw new Error(json.error || 'Error en Google Sheets');
+  return json;
+}
+
+/* ---------- Cola sin conexión ---------- */
+function saveQueue(){ store.set(LS.queue, queue); updateStatus(); }
+let flushing = false;
+async function flushQueue(silent = true){
+  if (flushing || !queue.length || !cfg.url || !navigator.onLine) return;
+  flushing = true; let sent = 0;
+  try{
+    while (queue.length){
+      const rec = queue[0];
+      try{
+        const clean = Object.assign({}, rec); delete clean._error;
+        const ret = await api('add', {record: clean, force: true});
+        queue.shift(); sent++; saveQueue();
+        // Si el historial de ese día está abierto, el registro pasa de "pendiente" a "enviado"
+        if (clean.fecha === isoToDmy($('#hDate').value) && !hist.some(x => x.id === clean.id)) hist.unshift(ret.record || clean);
+      }catch(e){
+        if (!e.network){ rec._error = e.message; saveQueue(); if (!silent) toast(e.message, 'err'); }
+        break;
+      }
+    }
+  }finally{
+    flushing = false; updateStatus();
+    if (sent) { toast(`✓ ${sent} registro${sent > 1 ? 's' : ''} pendiente${sent > 1 ? 's' : ''} enviado${sent > 1 ? 's' : ''}`, 'ok'); if (!$('#tab-hist').hidden) renderHistory(); }
+  }
+}
+function updateStatus(){
+  const chip = $('#netChip'), txt = $('#netText');
+  chip.classList.remove('off', 'pend');
+  if (queue.length){ chip.classList.add('pend'); txt.textContent = `${queue.length} pendiente${queue.length > 1 ? 's' : ''}`; }
+  else if (!navigator.onLine){ chip.classList.add('off'); txt.textContent = 'Sin conexión'; }
+  else txt.textContent = 'En línea';
+  $('#setupBanner').hidden = !!cfg.url;
+}
+$('#netChip').addEventListener('click', () => {
+  if (queue.length) { toast('Reenviando pendientes…', 'info', 1500); flushQueue(false); }
+  else toast(navigator.onLine ? 'Todo enviado ✓' : 'Sin conexión a internet', navigator.onLine ? 'ok' : 'warn', 2000);
+});
+window.addEventListener('online', () => { updateStatus(); flushQueue(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) flushQueue(); });
+window.addEventListener('offline', updateStatus);
+
+/* ---------- Guardar ---------- */
+let saving = false;
+function validate(prefix, obj){
+  const miss = REQUIRED.filter(k => !String(obj[k] || '').trim());
+  miss.forEach(k => { const w = $(`#w_${prefix}${k}`); if (w) w.classList.add('invalid'); });
+  if (miss.length){
+    const el = document.getElementById(prefix + miss[0]);
+    if (el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.focus(); }
+    beep(false);
+    toast('Completa: ' + miss.map(k => F[k].label).join(', '), 'err');
+    return false;
+  }
+  return true;
+}
+function setSaving(on){
+  saving = on; const b = $('#btnSave'); b.disabled = on;
+  b.innerHTML = on ? '<span class="spin"></span> Guardando…' : `${ic('save')} Guardar`;
+}
+async function onSave(){
+  if (saving) return;
+  const rec = {raw: $('#raw').value.trim()};
+  FIELDS.forEach(f => rec[f.key] = getVal(f.key));
+  if (!validate('f_', rec)) return;
+  if (!cfg.url){ toast('Primero configura la conexión con Google Sheets', 'err'); openSettings({skipPin:true}); return; }
+
+  // Multiplicador: la cantidad a guardar es la de la etiqueta × multiplicador
+  const m = multFactor();
+  if (m !== 1){ rec.und = multiplied(rec.und, m); rec.cajas = multiplied(rec.cajas, m); }
+
+  const now = limaNow();
+  Object.assign(rec, {id: uuid(), fecha: now.fecha, hora: now.hora, equipo: cfg.equipo || ''});
+
+  let force = false;
+  if (rec.raw && recentHas(rec.raw)){
+    const go = await dialog({title:'Etiqueta repetida', text:'Esta etiqueta ya se registró hoy en este equipo. ¿Guardar de todas formas?', ok:'Guardar igual', kind:'primary'});
+    if (!go) return; force = true;
+  }
+
+  setSaving(true);
+  let stored = false;
+  try{
+    // Sin red: no esperar, va directo a la memoria de la tablet
+    if (!navigator.onLine){ const off = new Error('offline'); off.network = true; throw off; }
+    let r = await api('add', {record: rec, force}, 15000);
+    if (r.duplicate){
+      const p = r.prev || {};
+      setSaving(false);
+      const go = await dialog({title:'Etiqueta ya registrada',
+        text:`Esta etiqueta ya está en Google Sheets:<br><b>${esc(p.fecha)} ${esc(p.hora)}</b> · Placa <b>${esc(p.placa || '-')}</b> · Pallet <b>${esc(p.pallet || '-')}</b><br><br>¿Guardar otra vez?`,
+        ok:'Guardar igual'});
+      if (!go) return;
+      setSaving(true);
+      r = await api('add', {record: rec, force: true});
+    }
+    stored = true;
+    beep(true); toast('✓ Guardado en Google Sheets', 'ok');
+  }catch(e){
+    if (e.network){
+      queue.push(rec); saveQueue(); stored = true;
+      toast('📶 Sin señal: quedó guardado en la tablet y se enviará solo cuando vuelva la red', 'warn', 5000);
+    } else {
+      beep(false); toast(e.message, 'err', 5000);
+    }
+  }finally{ setSaving(false); }
+
+  if (stored){
+    recentAdd(rec.raw);
+    // Borra solo los campos NO fijados (📌)
+    FIELDS.forEach(f => { if (!pins[f.key]) setVal(f.key, '', false); else markField(inp(f.key), false); });
+    $('#raw').value = '';
+    saveDraft();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+}
+$('#btnSave').addEventListener('click', onSave);
+
+/* ---------- Historial (tabla editable) ---------- */
+const HCOLS  = ['placa','codigo','descripcion','op','lote','fechaProd','fechaVenc','pesoNeto','pesoBruto','und','cajas','temperatura','pallet','multiplicador','numEtiqueta'];
+const HSHORT = {placa:'Placa', codigo:'Código', descripcion:'Descripción', op:'OP', lote:'Lote Juliano', fechaProd:'F. Producción',
+  fechaVenc:'F. Vencimiento', pesoNeto:'Peso Neto', pesoBruto:'Peso Bruto', und:'Cant. Und', cajas:'Cajas/Tinas/Sacos',
+  temperatura:'Temp. °C', pallet:'N° Pallet', multiplicador:'Mult.', numEtiqueta:'N° Etiq.'};
+const HW = {placa:115, descripcion:340, op:115, lote:125, fechaProd:125, fechaVenc:125, cajas:110, multiplicador:70, numEtiqueta:80};
+let dirty = {};          // { id: { campo: valorNuevo } }
+let histDate = '';
+const dirtyCount = () => Object.keys(dirty).length;
+const trimObj = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, String(v ?? '').trim()]));
+
+function histRows(){
+  const fecha = isoToDmy($('#hDate').value);
+  const pend = queue.filter(r => r.fecha === fecha).map(r => Object.assign({}, r, {_pending: true}));
+  return pend.concat(hist.filter(h => !queue.some(q => q.id === h.id)));
+}
+async function confirmDiscard(){
+  if (!dirtyCount()) return true;
+  const go = await dialog({title:'Cambios sin guardar', text:`Tienes <b>${dirtyCount()}</b> fila(s) con cambios sin guardar. ¿Descartarlos?`, ok:'Descartar', kind:'danger-solid'});
+  if (go){ dirty = {}; updateChangeBar(); }
+  return go;
+}
+async function loadHistory(){
+  if (!(await confirmDiscard())){ $('#hDate').value = histDate; return; }
+  histDate = $('#hDate').value;
+  const fecha = isoToDmy(histDate);
+  $('#hList').innerHTML = '<div class="skel"></div><div class="skel" style="margin-top:10px"></div><div class="skel" style="margin-top:10px"></div>';
+  try{
+    const r = await api('list', {fecha});
+    hist = r.rows || [];
+    renderHistory();
+  }catch(e){
+    hist = [];
+    renderHistory(e.network ? 'Sin conexión: solo se muestran los registros pendientes de esta tablet.' : e.message);
+  }
+}
+function renderHistory(err){
+  const q = $('#hSearch').value.trim().toLowerCase();
+  let rows = histRows();
+  if (q) rows = rows.filter(r => ['placa','codigo','op','lote','pallet','descripcion'].some(k => String(r[k] || '').toLowerCase().includes(q)));
+
+  const val = (r, k) => (dirty[r.id] && k in dirty[r.id]) ? dirty[r.id][k] : (r[k] || '');
+  $('#sCount').textContent = rows.length;
+  $('#sCajas').textContent = fmt(rows.reduce((a, r) => a + num(val(r, 'cajas')), 0));
+  $('#sUnd').textContent   = fmt(rows.reduce((a, r) => a + num(val(r, 'und')), 0));
+
+  const banner = err ? `<div class="banner">${esc(err)}</div>` : '';
+  if (!rows.length){
+    $('#hList').innerHTML = banner + `<div class="tbl-wrap"><div class="empty">${ic('box')}<div>${q ? 'Sin resultados para la búsqueda' : 'No hay registros para esta fecha'}</div></div></div>`;
+    return;
+  }
+  const head = `<tr><th class="sl">Hora</th>${HCOLS.map(k => `<th>${HSHORT[k]}</th>`).join('')}<th>Equipo</th></tr>`;
+  const body = rows.map(r => `
+    <tr class="${r._pending ? 'pending' : ''}">
+      <td class="ro sl"><div class="hcell">
+        <button class="rowdel" data-del="${esc(r.id)}" title="Eliminar fila">${ic('trash')}</button>
+        <span>${esc(String(r.hora || '').slice(0, 5))}</span>
+        ${r._pending ? '<span class="badge p" title="Pendiente de envío">Pendiente</span>' : ''}
+        ${r.editado ? `<span class="badge e" title="Editado ${esc(r.editado)}">Editado</span>` : ''}
+        ${r._error ? `<span class="badge" style="background:#FEE2E2;color:#991B1B" title="${esc(r._error)}">Error</span>` : ''}
+      </div></td>
+      ${HCOLS.map(k => {
+        const ch = dirty[r.id] && k in dirty[r.id];
+        return `<td><input class="cell${ch ? ' chg' : ''}" data-id="${esc(r.id)}" data-k="${k}" value="${esc(val(r, k))}"
+          inputmode="${F[k].type === 'text' ? 'text' : 'decimal'}" autocomplete="off" style="width:${HW[k] || 95}px"></td>`;
+      }).join('')}
+      <td class="ro">${esc(r.equipo || '')}</td>
+    </tr>`).join('');
+  $('#hList').innerHTML = banner + `<div class="tbl-wrap"><table class="ht"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+}
+function updateChangeBar(){
+  const n = dirtyCount();
+  $('#changeBar').hidden = !n || $('#tab-hist').hidden;
+  $('#chgText').textContent = `${n} fila${n === 1 ? '' : 's'} con cambios sin guardar`;
+}
+
+/* Edición de celdas */
+$('#hList').addEventListener('input', e => {
+  const el = e.target; if (!el.classList.contains('cell')) return;
+  const id = el.dataset.id, k = el.dataset.k;
+  if (F[k].upper){ const pos = el.selectionStart; el.value = el.value.toUpperCase(); try{ el.setSelectionRange(pos, pos); }catch(_){} }
+  const orig = String((histRows().find(r => r.id === id) || {})[k] || '').trim();
+  if (el.value.trim() === orig){
+    if (dirty[id]){ delete dirty[id][k]; if (!Object.keys(dirty[id]).length) delete dirty[id]; }
+    el.classList.remove('chg');
+  } else {
+    (dirty[id] = dirty[id] || {})[k] = el.value;
+    el.classList.add('chg');
+  }
+  el.classList.remove('bad');
+  updateChangeBar();
+});
+/* Enter baja a la misma columna de la fila siguiente (como Excel) */
+$('#hList').addEventListener('keydown', e => {
+  const el = e.target; if (e.key !== 'Enter' || !el.classList.contains('cell')) return;
+  e.preventDefault();
+  const tr = el.closest('tr').nextElementSibling;
+  const next = tr && tr.querySelector(`.cell[data-k="${el.dataset.k}"]`);
+  next ? next.focus() : el.blur();
+});
+/* Eliminar fila */
+$('#hList').addEventListener('click', async e => {
+  const b = e.target.closest('[data-del]'); if (!b) return;
+  const id = b.dataset.del;
+  const r = histRows().find(x => x.id === id); if (!r) return;
+  const go = await dialog({title:'Eliminar registro',
+    text:`¿Eliminar el pallet <b>${esc(r.pallet || '—')}</b> de las ${esc(String(r.hora || '').slice(0, 5))} (${esc(r.descripcion || r.codigo || '')})?<br>Queda un respaldo en la hoja "Eliminados".`,
+    ok:'Eliminar', kind:'danger-solid'});
+  if (!go) return;
+  try{
+    if (r._pending){ queue = queue.filter(x => x.id !== id); saveQueue(); }
+    else { await api('delete', {id}); hist = hist.filter(x => x.id !== id); }
+    delete dirty[id]; renderHistory(); updateChangeBar(); toast('Registro eliminado', 'info');
+  }catch(err){ toast(err.network ? 'Sin conexión: no se pudo eliminar' : err.message, 'err'); }
+});
+
+/* Guardar cambios de la tabla */
+async function saveChanges(){
+  const ids = Object.keys(dirty); if (!ids.length) return;
+  const all = histRows();
+  const bad = [];
+  ids.forEach(id => {
+    const r = all.find(x => x.id === id); if (!r) return;
+    REQUIRED.forEach(k => { const v = k in dirty[id] ? dirty[id][k] : r[k]; if (!String(v || '').trim()) bad.push([id, k]); });
+  });
+  if (bad.length){
+    bad.forEach(([id, k]) => { const el = $(`.cell[data-id="${CSS.escape(id)}"][data-k="${k}"]`); if (el) el.classList.add('bad'); });
+    beep(false); toast(REQUIRED.map(k => F[k].label).join(' y ') + ' no pueden quedar vacíos', 'err'); return;
+  }
+  const btn = $('#btnSaveChanges'); btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Guardando…';
+  try{
+    // Filas que aún están en la tablet (sin enviar): se corrigen ahí mismo
+    const pendIds = ids.filter(id => queue.some(q => q.id === id));
+    pendIds.forEach(id => { const q = queue.find(x => x.id === id); Object.assign(q, trimObj(dirty[id])); delete q._error; delete dirty[id]; });
+    if (pendIds.length) saveQueue();
+    // Filas ya en Google Sheets
+    const srvIds = Object.keys(dirty);
+    if (srvIds.length){
+      const r = await api('updateMany', {items: srvIds.map(id => ({id, record: trimObj(dirty[id])}))});
+      (r.records || []).forEach(rec => { const i = hist.findIndex(x => x.id === rec.id); if (i > -1) hist[i] = rec; delete dirty[rec.id]; });
+      (r.missing || []).forEach(id => { delete dirty[id]; hist = hist.filter(x => x.id !== id); });
+      if ((r.missing || []).length) toast(`${r.missing.length} fila(s) ya no existían en Google Sheets`, 'warn');
+    }
+    beep(true); toast('✓ Cambios guardados en Google Sheets', 'ok');
+  }catch(e){
+    toast(e.network ? 'Sin conexión: los cambios siguen en pantalla. Vuelve a guardar cuando haya señal.' : e.message, 'err', 5500);
+  }finally{
+    btn.disabled = false; btn.textContent = 'Guardar cambios';
+    renderHistory(); updateChangeBar();
+  }
+}
+$('#btnSaveChanges').addEventListener('click', saveChanges);
+$('#btnDiscard').addEventListener('click', async () => { if (await confirmDiscard()) renderHistory(); });
+window.addEventListener('beforeunload', e => { if (dirtyCount()){ e.preventDefault(); e.returnValue = ''; } });
+
+$('#hSearch').addEventListener('input', () => renderHistory());
+$('#hDate').addEventListener('change', loadHistory);
+$('#btnRefresh').addEventListener('click', loadHistory);
+
+/* ---------- Ajustes ---------- */
+function guessField(v, used){
+  const take = k => used.has(k) ? '' : k;
+  if (/^\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}$/.test(v)) return take('fechaProd') || take('fechaVenc');
+  if (/[a-záéíóúñ]/i.test(v)) return take('descripcion');
+  if (/^\d+[.,]\d+$/.test(v)) return take('pesoNeto') || take('pesoBruto');
+  if (/^\d+$/.test(v)){
+    if (v.length === 9) return take('lote');
+    if (v.length === 7) return take('op');
+    if (v.length === 6) return take('codigo');
+  }
+  return '';
+}
+function renderMap(box, sample){
+  const parts = sample ? splitQR(sample) : [];
+  const cur = cfg.map || [];
+  const opts = sel => `<option value="">— Ignorar —</option>` +
+    MAPPABLE.map(k => `<option value="${k}" ${sel === k ? 'selected' : ''}>${esc(F[k].label)}</option>`).join('');
+  if (parts.length < 2){
+    box.innerHTML = cur.length
+      ? `<p class="muted">Configuración actual (${cur.length} datos):</p>` + cur.map((k, i) => `<div class="map-row"><span class="mi">${i + 1}</span><code>Parte ${i + 1}</code><b>${k ? esc(F[k].label) : '— Ignorar —'}</b></div>`).join('') +
+        `<p class="muted" style="margin-top:10px">Para cambiarla, escanea una etiqueta o pega el texto del QR arriba.</p>`
+      : `<p class="muted">Escanea una etiqueta o pega el texto del QR para ver sus partes y decir qué es cada una.</p>`;
+    box.dataset.active = '0'; return;
+  }
+  const used = new Set();
+  const sel = parts.map((v, i) => { const k = cur.length ? (cur[i] || '') : guessField(v, used); if (k) used.add(k); return k; });
+  box.innerHTML = `<p class="muted">El QR tiene <b>${parts.length}</b> datos separados por "${esc(QR_SEP)}". Elige qué es cada uno:</p>` +
+    parts.map((v, i) => `<div class="map-row"><span class="mi">${i + 1}</span><code>${v ? esc(v) : '<i>(vacío)</i>'}</code><select data-i="${i}">${opts(sel[i])}</select></div>`).join('');
+  box.dataset.active = '1';
+}
+async function openSettings(opts = {}){
+  const configured = cfg.url && cfg.map && cfg.map.length;
+  if (configured && !opts.skipPin){
+    const pin = await dialog({title:'Ajustes', text:'Ingresa el PIN de administrador', input:'password', ok:'Entrar'});
+    if (pin === null) return;
+    if (pin !== ADMIN_PIN){ beep(false); toast('PIN incorrecto', 'err'); return; }
+  }
+  const m = openModal(`
+    <div class="modal-h"><div><h2>Ajustes</h2><p>Se guardan en esta tablet; el orden del QR se comparte con todas desde Google Sheets.</p></div>
+      <button class="x" data-close>${ic('x')}</button></div>
+    <div class="modal-b">
+      <div class="card">
+        <div class="sec-head"><span class="sec-num">1</span><div class="sec-title">Conexión a Google Sheets</div></div>
+        <label class="set-lbl">URL de la aplicación web (Apps Script, termina en /exec)</label>
+        <input class="set-in" id="sUrl" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(cfg.url)}">
+        <label class="set-lbl">Nombre de este equipo</label>
+        <div class="row"><input class="set-in" id="sEquipo" placeholder="Ej. Tablet Despacho 1" value="${esc(cfg.equipo)}">
+          <button class="btn ghost" id="sTest">Probar conexión</button></div>
+      </div>
+      <div class="card" style="margin:0">
+        <div class="sec-head"><span class="sec-num">2</span><div><div class="sec-title">Orden de datos del QR</div><div class="sec-sub">Qué significa cada parte separada por "${esc(QR_SEP)}"</div></div></div>
+        <div class="row"><input class="set-in" id="sSample" placeholder="Pega aquí el texto de un QR…" value="${esc(opts.sample || '')}">
+          <button class="btn teal" id="sScan">${ic('camera')} Escanear</button></div>
+        <div id="sMap" style="margin-top:12px"></div>
+      </div>
+    </div>
+    <div class="modal-f"><span class="sp"></span><button class="btn ghost" data-close>Cancelar</button>
+      <button class="btn primary" id="sSave">${ic('save')} Guardar ajustes</button></div>`);
+  const box = m.querySelector('#sMap');
+  renderMap(box, opts.sample || '');
+  m.querySelector('#sSample').addEventListener('input', e => renderMap(box, e.target.value.trim()));
+  m.querySelector('#sScan').addEventListener('click', () => openScanner(t => { m.querySelector('#sSample').value = t; renderMap(box, t); beep(true); }));
+  m.querySelector('#sTest').addEventListener('click', async ev => {
+    const prev = cfg.url; cfg.url = m.querySelector('#sUrl').value.trim();
+    const b = ev.currentTarget; b.disabled = true; b.textContent = 'Probando…';
+    try{ await api('ping'); toast('✓ Conexión correcta con Google Sheets', 'ok'); }
+    catch(e){ toast(e.network ? 'No se pudo conectar. Revisa la URL y que el acceso sea "Cualquier persona".' : e.message, 'err', 5000); }
+    finally{ cfg.url = prev; b.disabled = false; b.textContent = 'Probar conexión'; }
+  });
+  m.querySelector('#sSave').addEventListener('click', async () => {
+    cfg.url = m.querySelector('#sUrl').value.trim();
+    cfg.equipo = m.querySelector('#sEquipo').value.trim();
+    store.set(LS.url, cfg.url); store.set(LS.equipo, cfg.equipo);
+    let mapChanged = false;
+    if (box.dataset.active === '1'){
+      const map = [...box.querySelectorAll('select')].map(s => s.value);
+      const dup = map.filter(Boolean).find((k, i, a) => a.indexOf(k) !== i);
+      if (dup){ toast(`"${F[dup].label}" está asignado dos veces`, 'err'); return; }
+      cfg.map = map; store.set(LS.map, map); mapChanged = true;
+    }
+    closeModal(); updateStatus();
+    toast('✓ Ajustes guardados', 'ok');
+    if (mapChanged && cfg.url){
+      try{ await api('setConfig', {config: {map: cfg.map}}); }
+      catch(e){ toast('El orden del QR se guardó solo en esta tablet (sin conexión)', 'warn'); }
+      const raw = $('#raw').value.trim(); if (raw) applyScan(raw);
+    }
+    flushQueue();
+  });
+}
+$('#btnSettings').addEventListener('click', () => openSettings());
+$('#btnSetupNow').addEventListener('click', () => openSettings({skipPin: true}));
+
+/* ---------- Pestañas ---------- */
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', async () => {
+  const hist_ = b.dataset.tab === 'hist';
+  if (!hist_ && !$('#tab-hist').hidden && !(await confirmDiscard())) return;
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('active', x === b));
+  $('#tab-scan').hidden = hist_; $('#tab-hist').hidden = !hist_; $('#savebar').hidden = hist_;
+  document.body.style.paddingBottom = hist_ ? '96px' : '';
+  updateChangeBar();
+  if (hist_) loadHistory();
+}));
+
+/* ---------- Inicio ---------- */
+(function init(){
+  $('#btnSettings').innerHTML = ic('gear');
+  $('#tabScanBtn').innerHTML = ic('scan') + ' Escanear';
+  $('#tabHistBtn').innerHTML = ic('history') + ' Historial';
+  $('#scanIcon').innerHTML = ic('scan');
+  $('#btnRefresh').innerHTML = ic('refresh') + ' Actualizar';
+  document.querySelector('#w_raw .erase').innerHTML = ic('eraser');
+  setSaving(false);
+  buildForm(); restoreDraft();
+  $('#hDate').value = limaNow().iso;
+  updateStatus(); updateToday();
+  if (cfg.url){
+    api('getConfig').then(r => {
+      if (r.config && Array.isArray(r.config.map) && r.config.map.length){ cfg.map = r.config.map; store.set(LS.map, cfg.map); }
+    }).catch(() => {});
+    flushQueue();
+  }
+  setInterval(flushQueue, 20000);
+  // Permite abrir la app aunque no haya señal (guarda una copia en la tablet)
+  if ('serviceWorker' in navigator && location.protocol === 'https:')
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+})();
+</script>
+</body>
+</html>
