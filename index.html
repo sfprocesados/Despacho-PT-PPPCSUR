@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#C8102E">
+<meta name="theme-color" content="#0F3C95">
+<link rel="icon" href="logo.png">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Despacho PT · San Fernando</title>
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" defer></script>
 <style>
 :root{
-  --red:#C8102E; --red-d:#8F0A20; --red-50:#FDECEF;
+  --red:#0F3C95; --red-d:#0A2A6B; --red-50:#E8EEFB;
   --green:#15803D; --green-d:#14532D; --green-50:#DCFCE7;
   --teal:#0F766E; --teal-d:#115E59;
   --amber:#B45309; --amber-50:#FEF3C7;
@@ -29,8 +30,8 @@ svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-l
 .topbar{display:flex;align-items:center;gap:12px;padding:12px 16px;
   background:linear-gradient(135deg,var(--red),var(--red-d));color:#fff}
 .brand{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-.logo{width:46px;height:46px;border-radius:14px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}
-.logo img{max-width:90%;max-height:90%}
+.logo{height:68px;padding:4px 8px;border-radius:13px;background:#fff;display:grid;place-items:center;overflow:hidden;flex:none}
+.logo img{height:60px;width:auto;max-width:none;display:block}
 .logo span{display:none;color:var(--red);font-weight:900;font-size:19px;letter-spacing:-1px}
 .logo.nologo span{display:block}
 .t1{font-weight:800;font-size:18px;line-height:1.1}
@@ -77,7 +78,7 @@ svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-l
 .wide{grid-column:1/-1}
 .field label{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--muted);
   text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
-.req{color:var(--red)}
+.req{color:#DC2626}
 .qr-tag{display:none;background:#16A34A;color:#fff;font-size:10px;padding:2px 6px;border-radius:6px;letter-spacing:.05em}
 .field.qr .qr-tag{display:inline-block}
 .iw{display:flex;align-items:center;border:2px solid var(--line);border-radius:14px;background:#fff;transition:border-color .15s,box-shadow .15s,background .15s}
@@ -86,8 +87,8 @@ svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-l
 .iw input::placeholder{color:#C3C7CE;font-weight:500}
 .fbtn{width:42px;height:42px;margin-right:5px;border:0;border-radius:11px;background:transparent;display:grid;place-items:center;color:#A1A7B0}
 .fbtn svg{width:21px;height:21px}
-.fbtn.erase{color:var(--red)}
-.fbtn.erase:active{background:var(--red-50)}
+.fbtn.erase{color:#DC2626}
+.fbtn.erase:active{background:#FEE2E2}
 .fbtn.pin.on{color:var(--red);background:var(--red-50)}
 .fbtn.pin.on svg{fill:currentColor}
 .fbtn.sign{color:var(--text);font-weight:900;font-size:20px;background:#F3F4F6}
@@ -189,11 +190,14 @@ table.ht{border-collapse:separate;border-spacing:0;width:max-content;min-width:1
 .muted{color:var(--muted)}
 
 /* Escáner */
-.scan-ov{position:fixed;inset:0;background:#0B0F14;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:16px}
-#reader{width:min(560px,94vw);border-radius:18px;overflow:hidden;background:#000}
-#reader video{border-radius:18px}
+.scan-ov{position:fixed;inset:0;background:#0B0F14;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:10px}
+#reader{width:min(960px,98vw);max-height:68vh;border-radius:18px;overflow:hidden;background:#000;border:0!important}
+#reader video{width:100%!important;max-height:68vh;object-fit:cover;border-radius:18px}
 .scan-ov p{color:#E5E7EB;font-weight:650;margin:0;text-align:center}
-.scan-ov .btn{min-width:200px}
+.scan-ov .btn{min-width:150px}
+.scan-tools{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;width:min(960px,98vw)}
+.scan-zoom{display:flex;align-items:center;gap:8px;color:#E5E7EB;font-weight:700;flex:1;min-width:200px;max-width:380px}
+.scan-zoom input{flex:1;height:36px;accent-color:#16A34A}
 
 /* Toasts */
 .toasts{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);z-index:90;display:grid;gap:8px;width:min(560px,92vw)}
@@ -280,8 +284,12 @@ table.ht{border-collapse:separate;border-spacing:0;width:max-content;min-width:1
 
 <div class="scan-ov" id="scanOv" hidden>
   <div id="reader"></div>
-  <p>Apunta la cámara al QR o código de barras de la etiqueta</p>
-  <button class="btn ghost" id="btnCloseScan">Cancelar</button>
+  <p>Acerca la etiqueta hasta que se vea nítida · se lee sola</p>
+  <div class="scan-tools">
+    <button class="btn teal" id="btnTorch" hidden>🔦 Linterna</button>
+    <label class="scan-zoom" id="zoomBox" hidden>🔍 <input type="range" id="zoomRange" min="1" max="4" step="0.1" value="1"></label>
+    <button class="btn ghost" id="btnCloseScan">Cancelar</button>
+  </div>
 </div>
 
 <div class="toasts" id="toasts"></div>
@@ -319,9 +327,11 @@ const FIELDS = [
 const F = Object.fromEntries(FIELDS.map(f => [f.key, f]));
 const SECTIONS = [
   {title:'Transporte', keys:['placa']},
-  {title:'Producto', sub:'Se completa automáticamente al escanear', keys:['descripcion','codigo','op','lote','numEtiqueta','fechaProd','fechaVenc','pesoNeto','pesoBruto']},
   {title:'Despacho', keys:['und','cajas','temperatura','pallet','multiplicador']},
+  {title:'Producto', sub:'Se completa automáticamente al escanear', keys:['descripcion','codigo','op','lote','fechaProd','fechaVenc']},
 ];
+// Datos que vienen del QR pero no se muestran en pantalla (igual se guardan y salen en el historial)
+const HIDDEN = ['pesoNeto','pesoBruto','numEtiqueta'];
 // Campos que pueden venir dentro del QR
 const MAPPABLE = ['codigo','descripcion','op','lote','fechaProd','fechaVenc','pesoNeto','pesoBruto','und','cajas','pallet','numEtiqueta'];
 
@@ -348,7 +358,13 @@ const store = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
 };
-const LS = {url:'dpt_url', equipo:'dpt_equipo', map:'dpt_map', pins:'dpt_pins', queue:'dpt_queue', draft:'dpt_draft', recent:'dpt_recent'};
+/* Orden de los datos dentro del QR de la etiqueta (separados por "*"):
+   Etimaster*OP*Código*Descripción*Lote*Und*F.Venc*Cajas*F.Prod*N°Pallet*PesoNeto
+   '' = ignorar ese dato (el primero, "Etimaster", no se guarda) */
+const QR_MAP = ['', 'op', 'codigo', 'descripcion', 'lote', 'und', 'fechaVenc', 'cajas', 'fechaProd', 'pallet', 'pesoNeto'];
+const MAP_VERSION = 2;
+
+const LS = {url:'dpt_url', equipo:'dpt_equipo', map:'dpt_map_v2', pins:'dpt_pins', queue:'dpt_queue', draft:'dpt_draft', recent:'dpt_recent'};
 const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : 'id-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
 
 function limaNow(){
@@ -365,7 +381,7 @@ const fmt = n => n.toLocaleString('es-PE', {maximumFractionDigits:2});
 const cfg = {
   url: store.get(LS.url, DEFAULT_API_URL) || DEFAULT_API_URL,
   equipo: store.get(LS.equipo, ''),
-  map: store.get(LS.map, null),
+  map: store.get(LS.map, null) || QR_MAP.slice(),
 };
 let pins  = Object.assign(Object.fromEntries(FIELDS.map(f => [f.key, !!f.pin])), store.get(LS.pins, {}));
 let queue = store.get(LS.queue, []);
@@ -407,16 +423,50 @@ function closeModal(){ const m = $('#modalBack'); if (m) m.remove(); }
 
 /* ---------- Sonido de lectura ---------- */
 let actx;
-function beep(ok=true){
+function unlockAudio(){
   try{
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-    const o = actx.createOscillator(), g = actx.createGain();
-    o.type = 'sine'; o.frequency.value = ok ? 1250 : 380;
-    g.gain.setValueAtTime(.2, actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(.001, actx.currentTime + .18);
-    o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + .2);
+    if (actx.state === 'suspended') actx.resume();
+  }catch(e){}
+}
+['pointerdown', 'keydown', 'touchstart'].forEach(ev => document.addEventListener(ev, unlockAudio, {passive:true}));
+
+/* "pip" fuerte de escaneo (ok) o doble tono grave (error / aviso) */
+function tone(freq, start, dur, type){
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = type; o.frequency.value = freq;
+  const t0 = actx.currentTime + start;
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(1.0, t0 + .008);     // volumen máximo del navegador
+  g.gain.setValueAtTime(1.0, t0 + dur - .03);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  o.connect(g).connect(actx.destination); o.start(t0); o.stop(t0 + dur + .02);
+}
+function beep(ok=true){
+  try{
+    unlockAudio();
+    if (ok) tone(2000, 0, .16, 'square');
+    else { tone(330, 0, .18, 'sawtooth'); tone(260, .22, .26, 'sawtooth'); }
   }catch(e){}
   if (navigator.vibrate) navigator.vibrate(ok ? 80 : [60,60,60]);
+}
+
+/* ---------- Voz: "Producto ingresado" ---------- */
+let voices = [];
+function loadVoices(){ try{ voices = window.speechSynthesis ? speechSynthesis.getVoices() : []; }catch(e){} }
+loadVoices();
+try{ if (window.speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices; }catch(e){}
+function speak(text){
+  try{
+    const s = window.speechSynthesis; if (!s) return;
+    if (!voices.length) loadVoices();
+    const pick = ['es-PE', 'es-US', 'es-MX', 'es-419', 'es-ES', 'es'].reduce((f, l) => f || voices.find(v => v.lang && v.lang.replace('_', '-').startsWith(l)), null);
+    s.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = pick ? pick.lang : 'es-PE'; if (pick) u.voice = pick;
+    u.volume = 1; u.rate = 1; u.pitch = 1;
+    s.speak(u);
+  }catch(e){}
 }
 
 /* ---------- Formulario ---------- */
@@ -442,7 +492,7 @@ function buildForm(){
       </div>
       <div class="grid">${s.keys.map(k => fieldHTML(F[k], 'f_', true)).join('')}</div>
       ${s.keys.includes('multiplicador') ? '<div class="mult-preview" id="multPreview" hidden></div>' : ''}
-    </div>`).join('');
+    </div>`).join('') + `<div hidden>${HIDDEN.map(k => fieldHTML(F[k], 'f_', false)).join('')}</div>`;
   $('#legend').innerHTML = `<span><span style="color:var(--red)">${ic('pin')}</span> Fijado: se mantiene al guardar</span>
     <span><span style="color:var(--red)">${ic('eraser')}</span> Borra la casilla</span>
     <span><span class="qr-tag" style="display:inline-block">QR</span> Llenado desde la etiqueta</span>`;
@@ -564,32 +614,63 @@ $('#raw').addEventListener('paste', () => setTimeout(() => applyScan($('#raw').v
 $('#raw').addEventListener('input', saveDraft);
 
 /* ---------- Cámara ---------- */
-let qr = null, scanCb = null, scanning = false;
+let qr = null, scanCb = null, scanning = false, stopping = Promise.resolve(), cam = null, torchOn = false;
 async function openScanner(cb){
   if (typeof Html5Qrcode === 'undefined'){
     toast('No se pudo cargar el lector de cámara. Revisa internet o usa la pistola.', 'err', 4500); return;
   }
-  scanCb = cb; $('#scanOv').hidden = false; scanning = true;
+  unlockAudio();
+  scanCb = cb; scanning = true; torchOn = false; cam = null;
+  $('#btnTorch').hidden = true; $('#zoomBox').hidden = true; $('#scanOv').hidden = false;
+  await stopping;                                   // por si la cámara anterior aún se está cerrando
   try{
     if (!qr){
       const F_ = Html5QrcodeSupportedFormats;
       qr = new Html5Qrcode('reader', {verbose:false,
         formatsToSupport:[F_.QR_CODE, F_.CODE_128, F_.CODE_39, F_.EAN_13, F_.EAN_8, F_.UPC_A, F_.ITF, F_.DATA_MATRIX],
-        experimentalFeatures:{useBarCodeDetectorIfSupported:true}});
+        experimentalFeatures:{useBarCodeDetectorIfSupported:true}});   // lector nativo de Chrome: el más rápido
     }
     await qr.start({facingMode:'environment'},
-      {fps:12, qrbox:(w, h) => { const s = Math.floor(Math.min(w, h) * .78); return {width:s, height:s}; }},
-      text => { if (!scanning) return; scanning = false; const fn = scanCb; closeScanner().then(() => fn && fn(text)); },
+      {fps:25, disableFlip:true,
+       videoConstraints:{facingMode:{ideal:'environment'}, width:{ideal:1920}, height:{ideal:1080}},   // imagen nítida
+       qrbox:(w, h) => ({width:Math.floor(w * .94), height:Math.floor(Math.min(h * .85, w * .8))})},   // zona de lectura amplia
+      text => {
+        if (!scanning) return; scanning = false;
+        const fn = scanCb;
+        closeScanner();                              // cierra la cámara sin esperar
+        if (fn) fn(text);                            // el "pip" y el llenado suenan al instante
+      },
       () => {});
+    setupCamTools();
   }catch(err){
     await closeScanner();
     toast('No se pudo abrir la cámara. Da permiso de cámara al navegador. (' + (err?.message || err) + ')', 'err', 6000);
   }
 }
-async function closeScanner(){
+/* Enfoque continuo, linterna y zoom (si el equipo los permite) */
+async function setupCamTools(){
+  try{ await qr.applyVideoConstraints({advanced:[{focusMode:'continuous'}]}); }catch(e){}
+  try{
+    cam = qr.getRunningTrackCameraCapabilities();
+    const t = cam.torchFeature();
+    if (t && t.isSupported()) $('#btnTorch').hidden = false;
+    const z = cam.zoomFeature();
+    if (z && z.isSupported()){
+      const r = $('#zoomRange');
+      r.min = z.min(); r.max = Math.min(z.max(), 6); r.step = z.step() || 0.1; r.value = z.min();
+      $('#zoomBox').hidden = false;
+    }
+  }catch(e){}
+}
+$('#btnTorch').addEventListener('click', async () => {
+  try{ torchOn = !torchOn; await cam.torchFeature().apply(torchOn); $('#btnTorch').textContent = torchOn ? '🔦 Apagar' : '🔦 Linterna'; }catch(e){ torchOn = false; }
+});
+$('#zoomRange').addEventListener('input', e => { try{ cam.zoomFeature().apply(parseFloat(e.target.value)); }catch(err){} });
+function closeScanner(){
   scanning = false;
-  try{ if (qr && qr.isScanning) await qr.stop(); }catch(e){}
   $('#scanOv').hidden = true;
+  stopping = (async () => { try{ if (qr && qr.isScanning) await qr.stop(); }catch(e){} })();
+  return stopping;
 }
 $('#btnCloseScan').addEventListener('click', closeScanner);
 $('#btnScan').addEventListener('click', () => openScanner(applyScan));
@@ -726,7 +807,7 @@ async function onSave(){
       r = await api('add', {record: rec, force: true});
     }
     stored = true;
-    beep(true); toast('✓ Guardado en Google Sheets', 'ok');
+    toast('✓ Guardado en Google Sheets', 'ok');
   }catch(e){
     if (e.network){
       queue.push(rec); saveQueue(); stored = true;
@@ -737,6 +818,7 @@ async function onSave(){
   }finally{ setSaving(false); }
 
   if (stored){
+    speak('Producto ingresado');                     // voz fuerte, también cuando queda guardado sin internet
     recentAdd(rec.raw);
     // Borra solo los campos NO fijados (📌)
     FIELDS.forEach(f => { if (!pins[f.key]) setVal(f.key, '', false); else markField(inp(f.key), false); });
@@ -748,7 +830,7 @@ async function onSave(){
 $('#btnSave').addEventListener('click', onSave);
 
 /* ---------- Historial (tabla editable) ---------- */
-const HCOLS  = ['placa','codigo','descripcion','op','lote','fechaProd','fechaVenc','pesoNeto','pesoBruto','und','cajas','temperatura','pallet','multiplicador','numEtiqueta'];
+const HCOLS  = ['placa','codigo','descripcion','op','lote','fechaProd','fechaVenc','pesoNeto','und','cajas','temperatura','pallet','multiplicador'];
 const HSHORT = {placa:'Placa', codigo:'Código', descripcion:'Descripción', op:'OP', lote:'Lote Juliano', fechaProd:'F. Producción',
   fechaVenc:'F. Vencimiento', pesoNeto:'Peso Neto', pesoBruto:'Peso Bruto', und:'Cant. Und', cajas:'Cajas/Tinas/Sacos',
   temperatura:'Temp. °C', pallet:'N° Pallet', multiplicador:'Mult.', numEtiqueta:'N° Etiq.'};
@@ -990,7 +1072,7 @@ async function openSettings(opts = {}){
     closeModal(); updateStatus();
     toast('✓ Ajustes guardados', 'ok');
     if (mapChanged && cfg.url){
-      try{ await api('setConfig', {config: {map: cfg.map}}); }
+      try{ await api('setConfig', {config: {map: cfg.map, v: MAP_VERSION}}); }
       catch(e){ toast('El orden del QR se guardó solo en esta tablet (sin conexión)', 'warn'); }
       const raw = $('#raw').value.trim(); if (raw) applyScan(raw);
     }
@@ -1025,7 +1107,7 @@ document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click
   updateStatus(); updateToday();
   if (cfg.url){
     api('getConfig').then(r => {
-      if (r.config && Array.isArray(r.config.map) && r.config.map.length){ cfg.map = r.config.map; store.set(LS.map, cfg.map); }
+      if (r.config && r.config.v === MAP_VERSION && Array.isArray(r.config.map) && r.config.map.length){ cfg.map = r.config.map; store.set(LS.map, cfg.map); }
     }).catch(() => {});
     flushQueue();
   }

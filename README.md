@@ -31,15 +31,18 @@ App web para escanear las etiquetas de pallet (QR o código de barras) y guardar
 4. En la tablet, abre `https://TU-USUARIO.github.io/despacho-pt/` en Chrome y permite el uso de la cámara.
 5. Menú ⋮ → **Agregar a pantalla principal**, para que se abra como una app.
 
-## 3. Primera vez: el orden del QR
+## 3. Orden del QR (ya viene configurado)
 
-Escanea una etiqueta real. Como todavía no hay configuración, la app abre **Ajustes** y muestra cada dato del QR separado por `*`. Ya viene una propuesta (fechas, descripción, pesos, lote de 9 dígitos, OP de 7 y código de 6). Revisa cada uno, corrige lo que haga falta y guarda.
+La etiqueta trae el QR así, separado por `*`:
 
-Esta configuración se guarda en Google Sheets, en una hoja oculta llamada `Config`. Así todas las tablets la usan sin configurar cada una. Para cambiarla después, entra a ⚙️ con el PIN.
+`Etimaster*OP*Código*Descripción*Lote*Und*F.Vencimiento*Cajas*F.Producción*N°Pallet*Peso Neto`
+
+El primer dato (Etimaster) se ignora. Los demás llenan solos su casilla. Si algún día cambia el orden, entra a ⚙️ (PIN) y vuelve a asignarlo escaneando una etiqueta.
 
 ## Cómo funciona
 
-- **Escanear**: con la cámara (botón verde) o con una pistola lectora en el campo "Dato escaneado".
+- **Escanear**: con la cámara (botón verde) o con una pistola lectora en el campo "Dato escaneado". Al leer suena un "pip" fuerte. La cámara usa alta resolución, enfoque continuo y cierra apenas lee; si el equipo lo permite, muestra botones de linterna y zoom.
+- **Voz**: al guardar dice "Producto ingresado" (también si queda guardado sin internet). Para que se escuche fuerte, sube el volumen de **multimedia** de la tablet al máximo.
 - **📌 Fijar**: los campos fijados se mantienen después de guardar. Vienen fijados Placa, Código, Lote Juliano y Cajas, igual que en la app actual. Cada operario puede cambiarlos.
 - **Borrador rojo**: borra solo esa casilla. "Limpiar todo" borra todo, incluida la placa.
 - **Multiplicador de pallet**: si escriben, por ejemplo, 3, se guarda Cant. Und × 3 y Cajas/Tinas/Sacos × 3. La pantalla muestra el resultado antes de guardar. En la hoja queda la cantidad ya multiplicada y, en otra columna, el multiplicador usado.

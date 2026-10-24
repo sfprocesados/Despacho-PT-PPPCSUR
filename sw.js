@@ -1,9 +1,10 @@
 /* Despacho PT · copia local de la app para que abra sin internet.
    Cambia el número de versión cuando quieras forzar la actualización en todas las tablets. */
-const CACHE = 'despacho-pt-v2';
+const CACHE = 'despacho-pt-v3';
 const ASSETS = [
   './',
   './index.html',
+  './logo.png',
   'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js',
 ];
 
