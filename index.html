@@ -207,6 +207,51 @@ table.ht{border-collapse:separate;border-spacing:0;width:max-content;min-width:1
 @keyframes tin{from{opacity:0;transform:translateY(8px)}}
 .spin{width:22px;height:22px;border:3px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:rot .8s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
+
+/* ===== Versión compacta: todo visible con poco scroll ===== */
+body{padding-bottom:24px}
+.topbar{padding:8px 14px;gap:10px}
+.brand{gap:10px}
+.logo{height:52px;padding:3px 8px;border-radius:12px}
+.logo img{height:46px}
+.t1{font-size:17px}
+.t2{font-size:12px;margin-top:1px}
+.chip-status{padding:6px 10px;font-size:12.5px}
+.icon-btn{width:40px;height:40px}
+.tabs{padding:5px 14px}
+.tabs button{height:38px;font-size:15px}
+
+.scanbar{background:#fff;border-bottom:1px solid var(--line);box-shadow:0 6px 14px rgba(17,24,39,.06)}
+.scanbar-in{max-width:980px;margin:0 auto;padding:8px 14px;display:grid;grid-template-columns:104px minmax(0,1fr) 170px;gap:10px;align-items:stretch}
+.scanbar .scan-btn{min-height:0;height:78px;border-radius:16px;font-size:14px;gap:4px;box-shadow:0 6px 14px rgba(15,118,110,.3)}
+.scanbar .scan-btn svg{width:34px;height:34px}
+.raw-box{display:flex;flex-direction:column;justify-content:center;min-width:0}
+.raw-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:12px}
+.today{margin-top:0;padding:2px 9px;font-size:12px}
+.scanbar .iw input{height:46px;font-size:18px}
+.scanbar .save-btn{width:auto;max-width:none;margin:0;height:78px;border-radius:16px;font-size:20px;box-shadow:0 6px 14px rgba(21,128,61,.3)}
+.scanbar .save-btn svg{width:26px;height:26px}
+@media(max-width:560px){
+  .scanbar-in{grid-template-columns:128px minmax(0,1fr);grid-template-areas:"raw raw" "scan save"}
+  .raw-box{grid-area:raw}.scanbar .scan-btn{grid-area:scan;height:56px;flex-direction:row;justify-content:center;gap:8px}
+  .scanbar .scan-btn svg{width:24px;height:24px}.scanbar .save-btn{grid-area:save;height:56px}
+}
+
+.wrap{padding:10px 14px}
+.card{padding:12px 14px;margin-bottom:10px;border-radius:16px}
+.sec-head{margin:0 0 8px;gap:8px}
+.sec-head>div{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sec-num{width:24px;height:24px;font-size:13px;border-radius:8px}
+.sec-title{font-size:16px}
+.grid{gap:8px 10px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.field label{margin-bottom:3px;font-size:11.5px}
+.iw{border-radius:12px}
+.iw input{height:46px;font-size:18px;padding:0 10px}
+.fbtn{width:36px;height:36px;margin-right:3px}
+.fbtn svg{width:19px;height:19px}
+.legend{margin:0 2px 8px;font-size:12px;gap:12px}
+.mult-preview{margin-top:8px;padding:8px 12px;font-size:14px}
 </style>
 </head>
 <body>
@@ -224,6 +269,17 @@ table.ht{border-collapse:separate;border-spacing:0;width:max-content;min-width:1
     <button data-tab="scan" class="active" id="tabScanBtn"></button>
     <button data-tab="hist" id="tabHistBtn"></button>
   </nav>
+  <div class="scanbar" id="scanbar"><div class="scanbar-in">
+    <button class="scan-btn" id="btnScan"><span id="scanIcon"></span>Escanear</button>
+    <div class="raw-box">
+      <label class="raw-label" for="raw"><span>Dato escaneado</span><span class="today" id="todayCount">Hoy: 0</span></label>
+      <div class="iw" id="w_raw">
+        <input id="raw" autocomplete="off" placeholder="Escanea, usa la pistola o pega el código…" enterkeyhint="done">
+        <button type="button" class="fbtn erase" data-act="erase" data-t="raw" title="Borrar"></button>
+      </div>
+    </div>
+    <button class="save-btn" id="btnSave"></button>
+  </div></div>
 </div>
 
 <main class="wrap">
@@ -232,21 +288,6 @@ table.ht{border-collapse:separate;border-spacing:0;width:max-content;min-width:1
     <div class="banner" id="setupBanner" hidden>
       <span>⚠️ Falta conectar la app con Google Sheets.</span>
       <button class="btn primary" id="btnSetupNow">Configurar</button>
-    </div>
-
-    <div class="card">
-      <div class="scan-hero">
-        <button class="scan-btn" id="btnScan"><span id="scanIcon"></span>Escanear etiqueta</button>
-        <div>
-          <label class="raw-label" for="raw">Dato escaneado</label>
-          <div class="iw" id="w_raw">
-            <input id="raw" autocomplete="off" placeholder="Escanea, usa la pistola o pega el código…" enterkeyhint="done">
-            <button type="button" class="fbtn erase" data-act="erase" data-t="raw" title="Borrar"></button>
-          </div>
-          <div class="hint">También funciona con lector de mano (pistola): enfoca este campo y dispara.</div>
-          <div class="today" id="todayCount">Hoy en este equipo: 0 registros</div>
-        </div>
-      </div>
     </div>
 
     <div class="legend" id="legend"></div>
@@ -271,10 +312,6 @@ table.ht{border-collapse:separate;border-spacing:0;width:max-content;min-width:1
     <p class="hint" style="margin:10px 4px">Toca cualquier celda para corregirla. Las celdas cambiadas se marcan en amarillo y se guardan con el botón "Guardar cambios".</p>
   </section>
 </main>
-
-<div class="savebar" id="savebar">
-  <button class="save-btn" id="btnSave"></button>
-</div>
 
 <div class="changebar" id="changeBar" hidden>
   <span id="chgText">0 filas con cambios</span><span class="sp"></span>
@@ -322,7 +359,7 @@ const FIELDS = [
   {key:'cajas',        label:'Cant. Cajas/Tinas/Sacos', type:'num',  pin:true, ph:'Cajas/Tinas/Sacos'},
   {key:'temperatura',  label:'Temperatura (°C)',        type:'dec',  signed:true, ph:'°C'},
   {key:'pallet',       label:'N° de Pallet',            type:'num'},
-  {key:'multiplicador',label:'Multiplicador de Pallet', type:'num',  wide:true},
+  {key:'multiplicador',label:'Multiplicador de Pallet', type:'num'},
 ];
 const F = Object.fromEntries(FIELDS.map(f => [f.key, f]));
 const SECTIONS = [
@@ -690,7 +727,7 @@ function recentAdd(raw){
 }
 function updateToday(){
   const n = recentData().count;
-  $('#todayCount').textContent = `Hoy en este equipo: ${n} registro${n === 1 ? '' : 's'}`;
+  $('#todayCount').textContent = `Hoy: ${n} registro${n === 1 ? '' : 's'}`;
 }
 
 /* ---------- Conexión con Google Sheets ---------- */
@@ -1087,7 +1124,7 @@ document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click
   const hist_ = b.dataset.tab === 'hist';
   if (!hist_ && !$('#tab-hist').hidden && !(await confirmDiscard())) return;
   document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('active', x === b));
-  $('#tab-scan').hidden = hist_; $('#tab-hist').hidden = !hist_; $('#savebar').hidden = hist_;
+  $('#tab-scan').hidden = hist_; $('#tab-hist').hidden = !hist_; $('#scanbar').hidden = hist_;
   document.body.style.paddingBottom = hist_ ? '96px' : '';
   updateChangeBar();
   if (hist_) loadHistory();
