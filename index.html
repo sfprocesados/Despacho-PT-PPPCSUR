@@ -593,13 +593,19 @@ function saveDraft(){
 const multFactor = () => { const m = num(getVal('multiplicador')); return m > 0 ? m : 1; };
 const round3 = n => String(Math.round(n * 1000) / 1000);
 function multiplied(v, m){ return String(v || '').trim() === '' ? '' : round3(num(v) * m); }
+// Peso: si el valor trae decimales (489.60) el resultado se guarda con 2 decimales (1468.80)
+function multipliedPeso(v, m){
+  if (String(v || '').trim() === '') return '';
+  const r = num(v) * m;
+  return /[.,]/.test(String(v)) ? (Math.round(r * 100) / 100).toFixed(2) : round3(r);
+}
 function updateMultPreview(){
   const box = $('#multPreview'); if (!box) return;
   const m = multFactor();
   if (m === 1){ box.hidden = true; return; }
-  const und = getVal('und'), caj = getVal('cajas');
-  const part = (lbl, v) => v ? `${lbl}: ${esc(v)} × ${round3(m)} = <b>${multiplied(v, m)}</b>` : `${lbl}: (vacío)`;
-  box.innerHTML = `Se guardará con el multiplicador ×${round3(m)}<br>${part('Und', und)} &nbsp;·&nbsp; ${part('Cajas/Tinas/Sacos', caj)}`;
+  const und = getVal('und'), caj = getVal('cajas'), peso = getVal('pesoNeto');
+  const part = (lbl, v, fn = multiplied) => v ? `${lbl}: ${esc(v)} × ${round3(m)} = <b>${fn(v, m)}</b>` : `${lbl}: (vacío)`;
+  box.innerHTML = `Se guardará con el multiplicador ×${round3(m)}<br>${part('Und', und)} &nbsp;·&nbsp; ${part('Cajas/Tinas/Sacos', caj)} &nbsp;·&nbsp; ${part('Peso neto', peso, multipliedPeso)}`;
   box.hidden = false;
 }
 function restoreDraft(){
@@ -642,7 +648,18 @@ document.addEventListener('keydown', e => {
 });
 
 /* ---------- Lectura del QR ---------- */
-function splitQR(raw){ return String(raw || '').split(QR_SEP).map(s => s.trim()); }
+/* Separa el QR por "*". Si la descripción trae asteriscos propios (ej. "*CHICHARRON DE PRENSA..."),
+   el QR tendrá datos de más: se vuelven a unir dentro de la descripción para no desplazar los demás campos. */
+function splitQR(raw){
+  const parts = String(raw || '').split(QR_SEP).map(s => s.trim());
+  const map = cfg.map || [];
+  const d = map.indexOf('descripcion');
+  if (d > -1 && map.length && parts.length > map.length){
+    const extra = parts.length - map.length;
+    parts.splice(d, extra + 1, parts.slice(d, d + extra + 1).join(QR_SEP));
+  }
+  return parts;
+}
 
 function applyScan(raw){
   raw = String(raw || '').trim(); if (!raw) return;
@@ -846,7 +863,7 @@ async function onSave(){
 
   // Multiplicador: la cantidad a guardar es la de la etiqueta × multiplicador
   const m = multFactor();
-  if (m !== 1){ rec.und = multiplied(rec.und, m); rec.cajas = multiplied(rec.cajas, m); }
+  if (m !== 1){ rec.und = multiplied(rec.und, m); rec.cajas = multiplied(rec.cajas, m); rec.pesoNeto = multipliedPeso(rec.pesoNeto, m); }
 
   const now = limaNow();
   Object.assign(rec, {id: uuid(), fecha: now.fecha, hora: now.hora, equipo: cfg.equipo || ''});
